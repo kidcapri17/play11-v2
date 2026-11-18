@@ -1,0 +1,3 @@
+import {NextResponse} from 'next/server';
+import {correct,dailySet,ukDay} from '../../../lib/challenges';
+export async function POST(req:Request){try{const {id,guess}=await req.json();if(typeof id!=='string'||typeof guess!=='string'||guess.length>120)return NextResponse.json({error:'Invalid answer'},{status:400});const c=dailySet(ukDay()).find(x=>x.id===id);if(!c)return NextResponse.json({error:'Challenge unavailable'},{status:404});const isCorrect=correct(c,guess);return NextResponse.json({correct:isCorrect,answer:c.answer});}catch{return NextResponse.json({error:'Invalid request'},{status:400})}}
